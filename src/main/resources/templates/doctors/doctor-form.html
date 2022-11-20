@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+
+    <title>Doctor Form</title>
+</head>
+<body>
+<section class="h-100 bg-dark">
+    <form action="#" th:action="@{/doctors/saveDoctor}" th:object="${doctor}" method="POST">
+
+        <!--    hidden field to handle update    -->
+        <input type="hidden" th:field="*{id}" />
+
+        <!--    hidden field to handle update    -->
+        <input type="hidden" th:field="*{user}" />
+
+        <!--    hidden field to handle update    -->
+        <input type="hidden" th:field="*{patients}" />
+        <div class="container py-5 h-100">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="col">
+                    <div class="card card-registration my-4">
+                        <div class="row g-0">
+                            <div class="col-xl-6 d-none d-xl-block">
+                                <img src="https://i.pinimg.com/564x/31/57/21/315721335b50f4ff53bec536e65abaf8.jpg"
+                                     alt="Sample photo" class="img-fluid"
+                                     style="border-top-left-radius: .25rem; margin-top:15px; border-bottom-left-radius: .25rem;" />
+                            </div>
+                            <div class="col-xl-6">
+                                <div class="card-body p-md-5 text-black">
+                                    <h3 class="mb-5 text-uppercase text-info">Doctor Form</h3>
+                                    <div class="form-outline mb-4">
+                                        <input type="text" th:field="*{doctorName}" class="form-control form-control-lg" placeholder="Full Name" required>
+                                        <!--    Add error message if present    -->
+                                        <span th:if="${#fields.hasErrors('doctorName')}" th:errors="*{doctorName}" class="badge badge-danger ml-2 mb-4"></span>
+                                    </div>
+                                    <div class="form-outline mb-4">
+                                        <input  type="text" th:field="*{phoneNo}" class="form-control form-control-lg" placeholder="Contact no" required>
+                                        <!--    Add error message if present    -->
+                                        <span th:if="${#fields.hasErrors('phoneNo')}" th:errors="*{phoneNo}" class="badge badge-danger ml-2 mb-4"></span>
+                                    </div>
+                                    <div class="form-outline mb-4">
+                                        <input  type="text" th:field="*{age}" class="form-control form-control-lg" placeholder="Age" required>
+                                        <!--    Add error message if present    -->
+                                        <span th:if="${#fields.hasErrors('age')}" th:errors="*{age}" class="badge badge-danger ml-2 mb-4"></span>
+                                    </div>
+
+                                    <div class="d-md-flex justify-content-start align-items-center mb-4 py-2" >
+                                        <h6 class="mb-0 me-4">Gender:  </h6>
+                                        <div class="form-check form-check-inline mb-0 me-4">
+                                            <input class="form-check-input" type="radio" id = "male" th:field="*{gender}" th:value="MALE"/>
+                                            <label class="form-check-label" for="male">Male</label>
+                                        </div>
+                                        <div class="form-check form-check-inline mb-0 me-4">
+                                            <input class="form-check-input" type="radio" id = "female" th:field="*{gender}" th:value="FEMALE"/>
+                                            <label class="form-check-label" for="female">Female</label>
+                                        </div>
+                                        <div class="form-check form-check-inline mb-0 me-4">
+                                            <input class="form-check-input" type="radio" id = "other" th:field="*{gender}" th:value="OTHER"/>
+                                            <label class="form-check-label" for="other">Other</label>
+                                        </div>
+                                    </div>
+                                    <div class="form-outline mb-4">
+                                        <input  type="text" th:field="*{specialization}" class="form-control form-control-lg" placeholder="Specialization" required>
+                                        <!--    Add error message if present    -->
+                                        <span th:if="${#fields.hasErrors('specialization')}" th:errors="*{specialization}" class="badge badge-danger ml-2 mb-4"></span>
+                                    </div>
+                                    <div class="form-outline mb-4">
+                                        <input  type="text" th:field="*{degree}" class="form-control form-control-lg" placeholder="Degree" required>
+                                        <!--    Add error message if present    -->
+                                        <span th:if="${#fields.hasErrors('degree')}" th:errors="*{degree}" class="badge badge-danger ml-2 mb-4"></span>
+                                    </div>
+                                    <div class="form-outline mb-4">
+                                        <input  type="text" th:field="*{city}" class="form-control form-control-lg" placeholder="City" required>
+                                        <!--    Add error message if present    -->
+                                        <span th:if="${#fields.hasErrors('city')}" th:errors="*{city}" class="badge badge-danger ml-2 mb-4"></span>
+                                    </div>
+                                    <div class="form-outline mb-4">
+                                        <input  type="text" th:field="*{state}" class="form-control form-control-lg" placeholder="State" required>
+                                        <!--    Add error message if present    -->
+                                        <span th:if="${#fields.hasErrors('state')}" th:errors="*{state}" class="badge badge-danger ml-2 mb-4"></span>
+                                    </div>
+                                    <div class="form-outline mb-4">
+                                        <input  type="text" th:field="*{country}" class="form-control form-control-lg" placeholder="Country" required>
+                                        <!--    Add error message if present    -->
+                                        <span th:if="${#fields.hasErrors('country')}" th:errors="*{country}" class="badge badge-danger ml-2 mb-4"></span>
+                                    </div>
+                                    <div class="d-flex justify-content-end pt-3">
+                                        <button type="submit" class="btn btn-info col-2">Save</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</section>
+</body>
+</html>

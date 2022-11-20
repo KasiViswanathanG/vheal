@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+
+    <title>Save Drug</title>
+</head>
+<body>
+<div class="container">
+    <!--  Button to go back to Drugs list  -->
+    <a th:href="@{/drugs/list}"><h3>Drug Directory</h3></a>
+    <hr>
+
+    <p class="h4 mb-4">Save Drug</p>
+    <form action="#" th:action="@{/drugs/save}" th:object="${drug}" method="POST">
+
+        <!-- hidden field to handle update -->
+        <input type="hidden" th:field="*{id}" />
+
+        <!-- fields to fill Drug form -->
+        <div class="form-inline">
+        <input type="text" th:field="*{drugName}" class="form-control mb-4 col-4" placeholder="Drug">
+            <!-- Add error message if present -->
+            <span th:if="${#fields.hasErrors('drugName')}" th:errors="*{drugName}" class="badge badge-danger ml-2 mb-4"></span>
+        </div>
+
+        <div class="form-inline">
+        <input type="text" th:field="*{type}" class="form-control mb-4 col-4" placeholder="Type">
+            <!-- Add error message if present -->
+            <span th:if="${#fields.hasErrors('type')}" th:errors="*{type}" class="badge badge-danger ml-2 mb-4"></span>
+        </div>
+
+        <button type="submit" class="btn btn-info col-2">Save</button>
+    </form>
+
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Font Awesome -->
+    <link
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+            rel="stylesheet"
+    />
+    <!-- Google Fonts -->
+    <link
+            href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+            rel="stylesheet"
+    />
+    <!-- MDB -->
+    <link
+            href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/4.0.0/mdb.min.css"
+            rel="stylesheet"
+    />
+
+    <!-- MDB -->
+    <script
+            type="text/javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/4.0.0/mdb.min.js"
+    ></script>
+    <title>Doctor</title>
+</head>
+<body>
+
+<section style="background-color: #eee;">
+    <div class="container py-5">
+        <div class="row">
+            <div class="col">
+                <nav aria-label="breadcrumb" class="bg-light rounded-3 p-3 mb-4">
+                    <ol class="breadcrumb mb-0">
+                        <!--  Home button  -->
+                        <li sec:authorize="hasAuthority('DOCTOR')" class="breadcrumb-item">
+
+                            <a sec:authorize="hasAuthority('DOCTOR')"
+                               th:href="@{/doctors/showDoctor(doctorId=${doctor.id})}">
+                                <i class="fa fa-home" aria-hidden="true"></i> Home</a></li>
+                        <li class="breadcrumb-item"><a href="#"> Doctor</a></li>
+                        <li th:text="${doctor.doctorName}" class="breadcrumb-item active" aria-current="page">Doctor Profile</li>
+                        <a th:href="@{/drugs/list}"
+                           class="mx-auto ml-5 btn btn-info btn-m">
+                            Drugs Directory
+                        </a>
+                        <form class="mx-auto" style="width: 200px" th:action="@{/logout}" method="POST">
+                            <button type="submit" class="btn btn-default"><i class="fa fa-sign-out-alt text-info mr-3"></i> log out</button>
+                        </form>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="card mb-4">
+                    <div class="card-body text-center">
+                        <img src="/images/trafalgarLaw.jpg" alt="avatar"
+                             class="rounded-circle img-fluid" style="width: 200px;">
+                        <h5 th:text="${doctor.doctorName}" class="my-3">Doctor Name    </h5>
+                        <p th:text="${doctor.specialization}" class="text-muted mb-1">specialization</p>
+                        <p th:text="${doctor.degree}" class="text-muted mb-4">degree</p>
+                        <sup sec:authorize="hasAuthority('DOCTOR')">
+                            <a th:href="@{doctors/showFormForUpdateDoctor(doctorId=${doctor.id})}">Edit</a>
+                        </sup>
+                    </div>
+                </div>
+                <div class="card mb-4 mb-lg-0">
+                    <div class="card-body p-4">
+                        <!-- Search form to Add Patient -->
+                        <form action="#" th:action="@{/doctors/searchPatients}" th:object="${doctor}" method="GET" >
+                            <input type="hidden" th:field="*{id}">
+                            <!--  search fields  -->
+                            <div class="input-group">
+                                <div class="form-outline">
+                                    <input type="search" name="patientSearch"id="form1" class="form-control" />
+                                    <label class="form-label" for="form1">Search Patients</label>
+                                </div>
+                                <button type="submit"  class="btn btn-primary"><i class="fas fa-search"></i> </button>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- Searched Patients list -->
+                    <ul th:each="tempPatient : ${patients}" class="list-group list-group-flush rounded-3">
+                        <li class="list-group-item d-flex justify-content-between align-items-center p-3">
+                            <i class="fa-lg text-warning"></i>
+                            <p th:text="${tempPatient.patientName}" class="mb-0"></p>
+                            <a th:href="@{/doctors/addDoctorPatient(patientId=${tempPatient.id},doctorId=${doctor.id})}" class="btn btn-info btn-sm">Add</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-8">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <p class="mb-0">Full Name</p>
+                            </div>
+                            <div class="col-sm-9">
+                                <p th:text="${doctor.doctorName}" class="text-muted mb-0"></p>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <p class="mb-0">Email</p>
+                            </div>
+                            <div class="col-sm-9">
+                                <p th:text="${doctor.user.email}" class="text-muted mb-0">email</p>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <p class="mb-0">Mobile</p>
+                            </div>
+                            <div class="col-sm-9">
+                                <p th:text="${doctor.phoneNo}" class="text-muted mb-0"></p>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <p class="mb-0">Age & Gender</p>
+                            </div>
+                            <div class="col-sm-9">
+                                <p th:text="${doctor.age}" class="text-muted mb-0"></p>
+                                <p th:text="${doctor.gender}" class="text-muted mb-0"></p>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <p class="mb-0">Address</p>
+                            </div>
+                            <div class="col-sm-9">
+                                <p th:text="${doctor.city}" class="text-muted mb-0"></p>
+                                <p th:text="${doctor.state}" class="text-muted mb-0"></p>
+                                <p  th:text="${doctor.country}"class="text-muted mb-0"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <!-- Search form to Doctor Patients -->
+                        <form action="#" th:action="@{/doctors/searchDoctorPatients}" th:object="${doctor}" method="GET">
+                            <input type="hidden" th:field="*{id}">
+                            <!--  search fields  -->
+                            <div class="input-group">
+                                <div class="form-outline">
+                                    <input type="search" name="doctorPatientSearch" id="form2" class="form-control" />
+                                    <label class="form-label" for="form2">Search Your Patients</label>
+                                </div>
+                                <button type="submit" class="btn btn-success btn-sm mb-3">Search</button>
+                            </div>
+                        </form>
+
+
+                        <table class="table align-middle mb-0 bg-white">
+                            <thead class="bg-light">
+                            <tr>
+                                <th>Patients</th>
+                                <th>Full Details</th>
+                                <th>Remove</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="tempDoctorPatient : ${doctorPatients}">
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <img
+                                                src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp"
+                                                alt=""
+                                                style="width: 45px; height: 45px"
+                                                class="rounded-circle"
+                                        />
+                                        <div class="ms-3">
+                                            <p th:href="@{/doctors/showPatient(doctorPatientId=${tempDoctorPatient.id},doctorId=${doctor.id})}"
+                                               th:text="${tempDoctorPatient.patientName}" class="fw-bold mb-1">Patient Name</p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <!-- View Patient button -->
+                                    <a th:href="@{/doctors/showPatient(doctorPatientId=${tempDoctorPatient.id},doctorId=${doctor.id})}"
+                                       class="btn btn-info btn-m">
+                                        View
+                                    </a>
+                                </td>
+                                <td>
+                                    <!-- Delete Patient button -->
+                                    <a th:href="@{/doctors/deleteDoctorPatient(doctorPatientId=${tempDoctorPatient.id},doctorId=${doctor.id})}"
+                                       class="btn btn-danger btn-m"
+                                       onclick="if (!(confirm('Are you sure you want to delete this Patient?'))) return false">
+                                        Delete
+                                    </a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>

@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Font Awesome -->
+    <link
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+            rel="stylesheet"
+    />
+    <!-- Google Fonts -->
+    <link
+            href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+            rel="stylesheet"
+    />
+    <!-- MDB -->
+    <link
+            href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/4.0.0/mdb.min.css"
+            rel="stylesheet"
+    />
+
+    <!-- MDB -->
+    <script
+            type="text/javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/4.0.0/mdb.min.js"
+    ></script>
+    <style>
+        body{
+            background-color: #eee;
+        }
+    </style>
+    <title>Prescription</title>
+</head>
+<body>
+
+<section style="background-color: #eee;">
+    <div class="container py-5">
+        <div class="row">
+            <div class="col">
+                <nav aria-label="breadcrumb" class="bg-light rounded-3 p-3 mb-4">
+                    <ol class="breadcrumb mb-0">
+                        <!--  Home button  -->
+                        <li sec:authorize="hasAuthority('PATIENT')" class="breadcrumb-item">
+                            <a sec:authorize="hasAuthority('PATIENT')"
+                               th:href="@{/doctors/showPatient(doctorId=${doctor.id},doctorPatientId=${patient.id})}">
+                                <i class="fa fa-home" aria-hidden="true"></i> Home</a></li>
+                        <li sec:authorize="hasAuthority('DOCTOR')" class="breadcrumb-item">
+                            <a sec:authorize="hasAuthority('DOCTOR')"
+                               th:href="@{/doctors/showDoctor(doctorId=${doctor.id})}">
+                                <i class="fa fa-home" aria-hidden="true"></i> Home</a></li>
+                        <li sec:authorize="hasAuthority('DOCTOR')" class="breadcrumb-item">
+                            <a sec:authorize="hasAuthority('DOCTOR')"
+                               th:href="@{/doctors/showPatient(doctorId=${doctor.id},doctorPatientId=${patient.id})}">
+                                Patient</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Prescription</li>
+                        <form class="mx-auto" style="width: 200px" th:action="@{/logout}" method="POST">
+                            <button type="submit" class="btn btn-default"><i class="fa fa-sign-out-alt text-info mr-3"></i> log out</button>
+                        </form>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <span th:if="${prescription.suggestion == null}">
+                            <form action="#" th:action="@{/doctors/suggestion(patientId=${patient.id},doctorId=${doctor.id})}" th:object="${prescription}" method="POST">
+                                <input type="hidden" th:field="*{id}">
+                                <input type="hidden" th:field="*{drugs}">
+                                <div class="input-group">
+                                    <input type="text" th:field="*{suggestion}" class="form-control mb-4 col-4" placeholder="Prescription">
+                                    <!--    Add error message if present    -->
+                                    <span th:if="${#fields.hasErrors('suggestion')}" th:errors="*{suggestion}" class="badge badge-danger ml-2 mb-4"></span>
+                                </div>
+                                <button type="submit" class="btn btn-secondary">Add Prescription</button>
+                            </form>
+                        </span>
+                        <!-- Display Suggestion and Date -->
+                        <h4 th:text="${prescription.suggestion}" class="my-3 text-success">Prescription</h4>
+                        <h5 th:text="${prescription.date}" class="my-3 text-body">Date</h5>
+                        <span th:if="${prescription.suggestion != null}">
+                            <span sec:authorize="hasAuthority('DOCTOR')">
+                                <a th:href="@{/prescriptions/showFormForUpdate(prescriptionId=${prescription.id},patientId=${patient.id},doctorId=${doctor.id})}"
+                                   class="btn btn-secondary btn-sm">
+                                    Update
+                                </a>
+                            </span>
+                        </span>
+                        <hr>
+                        <!--  Search form to Add drug -->
+                        <span class="card-body" sec:authorize="hasAuthority('DOCTOR')">
+                            <form action="#" th:action="@{/doctors/searchDrug}" th:object="${prescription}" method="GET">
+                                <!--  search fields  -->
+                                <input type="hidden" th:field="*{id}">
+                                <input type="hidden" name = "patientId" th:value="${patient.id}">
+                                <input type="hidden" name = "doctorId" th:value="${doctor.id}">
+                                <div class="input-group">
+                                    <div class="form-outline">
+                                    <input type="search" name="drugSearch" id="form1" class="form-control" />
+                                    <label class="form-label" for="form1">Drug</label>
+                                    </div>
+                                <button type="submit" class="btn btn-success btn-m mb-3">Search</button>
+                                </div>
+                            </form>
+                            <!-- Searched Drugs list -->
+                            <ul th:each="tempDrug : ${drugs}">
+                                <li class="list-group-item d-flex justify-content-between align-items-center p-3">
+                                    <i class="fa-lg text-warning"></i>
+                                    <p th:text="${tempDrug.drugName}" class="mb-0">Drug name</p>
+                                    <a th:href="@{/doctors/addDrug(drugId=${tempDrug.id},prescriptionId=${prescription.id},
+                                    patientId=${patient.id},doctorId=${doctor.id})}" class="btn btn-info btn-sm">Add</a>
+                                </li>
+                            </ul>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-8">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h3 th:text="${patient.patientName}" class="my-3 text-primary">Patient Name    </h3>
+                        <!-- Display list of Prescribed drugs for patient -->
+                        <table class="table align-middle mb-0 bg-white">
+                            <!--   Table header     -->
+                            <thead class="bg-light">
+                            <tr>
+                                <th>Drug</th>
+                                <th>Type</th>
+                                <th sec:authorize="hasAuthority('DOCTOR')">Remove</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="tempPrescribedDrugs : ${prescribedDrugs}">
+                                <input type="hidden" th:field="${prescription.id}">
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="ms-3">
+                                            <p th:text="${tempPrescribedDrugs.drugName}" class="fw-bold mb-1">Drug</p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="ms-3">
+                                            <p th:text="${tempPrescribedDrugs.type}" class="fw-bold mb-1">Type</p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td sec:authorize="hasAuthority('DOCTOR')">
+                                    <!-- Delete Drug button -->
+                                    <a th:href="@{/doctors/deleteDrug(prescribedDrugId=${tempPrescribedDrugs.id},prescriptionId=${prescription.id},
+                                    patientId=${patient.id},doctorId=${doctor.id})}"
+                                       class="btn btn-danger btn-m"
+                                       onclick="if (!(confirm('Are you sure you want to delete this Drug?'))) return false">
+                                        Delete
+                                    </a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+
+    <title>Drug Directory</title>
+</head>
+<body>
+
+<div class="container">
+    <hr>
+    <!--  Home button  -->
+    <a th:href="@{/}" class="btn btn-primary btn-sm mb-3">
+        Log out
+    </a>
+    <a th:href="@{/drugs/list}"><h3>Drug Directory</h3></a>
+    <hr>
+
+    <!--  Add Drug button  -->
+    <a th:href="@{/drugs/showFormForAdd}" class="btn btn-primary btn-sm mb-3">
+        Add Drug
+    </a>
+    <!--  Search form  -->
+    <form action="#" th:action="@{/drugs/search}" method="GET" class="form-inline">
+    <!--  search fields  -->
+    <input type="search" name="drugSearch" placeholder="Search here..." class="form-control-sm ml-5 mr-2 mb-3">
+    <button type="submit" class="btn btn-success btn-sm mb-3">Search</button>
+
+    </form>
+
+    <table class="table table-bordered table-striped">
+
+        <!-- Table header -->
+        <thead class="thead-dark">
+            <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr th:each="tempDrug : ${drugs}">
+
+                <!-- Table fields -->
+                <td th:text="${tempDrug.drugName}" />
+                <td th:text="${tempDrug.type}" />
+                <td>
+
+                    <!-- Update button -->
+                    <a th:href="@{/drugs/showFormForUpdate(drugId=${tempDrug.id})}"
+                       class="btn btn-info btn-sm">
+                        Update
+                    </a>
+
+                    <!-- Delete button -->
+                    <a th:href="@{/drugs/delete(drugId=${tempDrug.id})}"
+                       class="btn btn-danger btn-sm"
+                       onclick="if (!(confirm('Are you sure you want to delete this drug?'))) return false">
+                        Delete
+                    </a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+
+
+</body>
+</html>

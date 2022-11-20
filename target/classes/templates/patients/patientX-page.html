@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Font Awesome -->
+    <link
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+            rel="stylesheet"
+    />
+    <!-- Google Fonts -->
+    <link
+            href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+            rel="stylesheet"
+    />
+    <!-- MDB -->
+    <link
+            href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/4.0.0/mdb.min.css"
+            rel="stylesheet"
+    />
+
+    <!-- MDB -->
+    <script
+            type="text/javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/4.0.0/mdb.min.js"
+    ></script>
+    <title>Patient</title>
+</head>
+<body>
+
+<section style="background-color: #eee;">
+    <div class="container py-5">
+        <div class="row">
+            <div class="col">
+                <nav aria-label="breadcrumb" class="bg-light rounded-3 p-3 mb-4">
+                    <div class="container-fluid">
+                    <ol class="breadcrumb mb-0">
+                        <!--  Home button  -->
+                        <li class="breadcrumb-item">
+                            <a href="#">Home</a></li>
+                        <li class="breadcrumb-item"><a href="#">Patient</a></li>
+                        <li th:text="${patient.patientName}" class="breadcrumb-item active" aria-current="page">Patient Profile</li>
+                        <form class="mx-auto" style="width: 200px" th:action="@{/logout}" method="POST">
+                            <button type="submit" class="btn btn-default"><i class="fa fa-sign-out-alt text-info mr-3"></i> log out</button>
+                        </form>
+                    </ol>
+                    </div>
+                </nav>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-5">
+                <div class="card mb-4">
+                    <div class="card-body text-center">
+                        <img src="/images/yor.jpeg" alt="avatar"
+                             class="rounded-circle img-fluid" style="width: 200px;">
+                        <h5 th:text="${patient.patientName}" class="my-3">Patient Name    </h5>
+                        <sup sec:authorize="hasAuthority('PATIENT')">
+                            <a th:href="@{patients/showFormForUpdatePatient(patientId=${patient.id})}">Edit</a>
+                        </sup>
+                    </div>
+                </div>
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <p class="mb-0">Full Name</p>
+                            </div>
+                            <div class="col-sm-9">
+                                <p th:text="${patient.patientName}" class="text-muted mb-0">patientName</p>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <p class="mb-0">Email</p>
+                            </div>
+                            <div class="col-sm-9">
+                                <p th:text="${patient.user.email}" class="text-muted mb-0">email</p>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <p class="mb-0">Mobile</p>
+                            </div>
+                            <div class="col-sm-9">
+                                <p th:text="${patient.phoneNo}" class="text-muted mb-0">phoneNo</p>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <p class="mb-0">Age & Gender</p>
+                            </div>
+                            <div class="col-sm-9">
+                                <p th:text="${patient.age}" class="text-muted mb-0">Age</p>
+                                <p th:text="${patient.gender}" class="text-muted mb-0">Gender</p>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <p class="mb-0">Address</p>
+                            </div>
+                            <div class="col-sm-9">
+                                <p th:text="${patient.city}" class="text-muted mb-0">Address</p>
+                                <p th:text="${patient.state}" class="text-muted mb-0"></p>
+                                <p  th:text="${patient.country}"class="text-muted mb-0"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-7">
+                <div class="card mb-4">
+                    <div class="card-body">
+
+                        <!-- Display list of prescription for patient -->
+
+                        <!--   Table header     -->
+                        <table class="table align-middle mb-0 bg-white">
+                            <thead class="bg-light">
+                            <tr>
+                                <th>Date</th>
+                                <th>Prescription</th>
+                                <th>Full Details</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</span>
+</body>
+</html>
