@@ -45,7 +45,7 @@ public class LoginController {
         this.patientService = patientService;
     }
 
-    @GetMapping("/")
+    @GetMapping("")
     public String viewHomePage() {
         return "index";
     }
